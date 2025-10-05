@@ -1,4 +1,5 @@
-.equ SREG, 0x3f             ; Define SREG label.
+.equ SREG, 0x3f             ;Define SREG label.
+
 .org 0
 
 main:   ldi r16, 0          ; Set register 16 to 0.
