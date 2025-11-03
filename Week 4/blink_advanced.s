@@ -14,28 +14,29 @@ main:
     ldi r16, 0x01       ; Send signal to bit 0.
     out PORTB, r16
     
-    call halfsec
+    ldi r17, 40         ; Parameter for the outer most loop. => 400ms
+    call delay
 
     ldi r20, 0x00
     out PORTB, r20
 
-    call halfsec
+    ldi r17, 20         ; Parameter for the outer most loop. => 200ms
+    call delay
 
 rjmp main
 
 ; inner loop is 5 cycles so delay is - 
-; 5 cycles * 200 * 200 * 40 = 8000000 cycles
-; 8000000 cycles / 16,000,000 = 0.5 seconds 
-halfsec:     
-    ldi r17, 200
+; 5 cycles * 126 * 255 = 160,000 cycles
+; 160,000 cycles / 16,000,000 = 0.01 seconds roughly
+delay:     
     loop_1: 
             dec r17
 
-            ldi r18, 200
+            ldi r18, 126
             loop_2: 
                     dec r18
 
-                    ldi r19, 40
+                    ldi r19, 255
                     loop_3: nop
                             dec r19
                             cpi r19, 0
