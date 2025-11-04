@@ -20,18 +20,90 @@ main:
     out PORTB, r16
     out PORTD, r16
 
+    call halfsec
+
+    call bitmask_lower
+    call bitshift_lower
+
+    out PORTB, r16
+    out PORTD, r16
+
+    call halfsec
+
+    call bitmask_upper
+    call bitshift_upper
+
+    or r17, r18
+
+    out PORTB, r17
+    out PORTD, r17
+
+    call halfsec
+
+rjmp main
+
+bitmask_lower: 
     ldi r17, 0x0F
-    and r16, r17
+    and r17, r16
 
-    out PORTB, r16
-    out PORTD, r16
+    out PORTB, r17
+    out PORTD, r17
 
-    lsl r16
-    lsl r16
-    lsl r16
-    lsl r16
+    call halfsec
+    ret
 
-    out PORTB, r16
-    out PORTD, r16
+bitshift_lower:
+    lsl r17
+    lsl r17
+    lsl r17
+    lsl r17
 
-mainloop: rjmp mainloop
+    out PORTB, r17
+    out PORTD, r17
+
+    call halfsec
+    ret
+
+bitmask_upper:
+    ldi r18, 0xF0
+    and r18, r16
+
+    out PORTB, r18
+    out PORTD, r18
+
+    call halfsec
+    ret
+
+bitshift_upper:
+    lsr r18
+    lsr r18
+    lsr r18
+    lsr r18
+
+    out PORTB, r18
+    out PORTD, r18
+
+    call halfsec
+    ret
+
+halfsec:     
+    ldi r31, 200
+    loop_1: 
+            dec r31
+
+            ldi r30, 200
+            loop_2: 
+                    dec r30
+
+                    ldi r29, 40
+                    loop_3: nop
+                            dec r29
+                            cpi r29, 0
+                            brne loop_3
+
+                    cpi r30, 0
+                    brne loop_2 
+
+            cpi r31, 0
+            brne loop_1
+     ret
